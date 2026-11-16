@@ -7,7 +7,7 @@ Vitrine digital para encontrar profissionais de Beberibe e região. Clientes pes
 - 58 categorias profissionais, incluindo diaristas, professores particulares, pintores e técnicos de máquinas de lavar.
 - Filtros por profissão e localidade; layout responsivo com animações nos cards.
 - Perfis com foto, nome, áreas de atendimento e botão de WhatsApp.
-- Formulário de solicitação de cadastro para profissionais.
+- Formulário que o próprio profissional preenche e envia pelo WhatsApp da agência, sem precisar ditar seus dados.
 - Informações sobre a mensalidade sugerida de R$ 19,90.
 
 ## Como publicar no GitHub Pages
@@ -36,10 +36,10 @@ node scripts/audit.mjs
 
 ## Antes do lançamento comercial
 
-- Informar um WhatsApp administrativo no campo `CONFIG.adminWhatsapp` do `index.html`.
+- WhatsApp da agência configurado: **(85) 99712-0397** (`CONFIG.adminWhatsapp`). Verificar o recebimento de uma solicitação de teste.
 - Definir os meios de recebimento das mensalidades. Não existe cobrança automática.
 - Cadastrar profissionais reais mediante autorização de divulgação.
 - Completar dados de atendimento, privacidade e regras comerciais.
-- O formulário atual não cria uma conta nem salva cadastros automaticamente: ele prepara a solicitação para envio à agência.
+- O formulário atual não cria uma conta nem salva cadastros automaticamente: o profissional deve tocar em **Enviar** na mensagem preparada pelo WhatsApp. A administração analisa e publica manualmente os perfis aprovados.
 
 O projeto também possui uma prévia privada vinculada ao ChatGPT Sites. Este repositório do GitHub é uma cópia publicável, sem necessidade do arquivo privado de hospedagem do Sites.
