@@ -19,9 +19,9 @@ function extract(pattern, label) {
 const script = extract(/<script>\s*([\s\S]*?)\s*<\/script>/, 'JavaScript principal');
 new Script(script, { filename: 'index.html' });
 
-const servicesSource = extract(/const SERVICES = (\[[\s\S]*?\]);\s*\/\* CADASTROS/, 'Catálogo');
+const servicesSource = extract(/const SERVICES = (\[[\s\S]*?\]);\s*\/\* Perfis legados/, 'Catálogo');
 const services = Function(`return (${servicesSource})`)();
-const profileSource = extract(/const PROFESSIONALS = (\[[\s\S]*?\]);\s*function iconSvg/, 'Profissionais');
+const profileSource = extract(/let PROFESSIONALS = (\[[\s\S]*?\]);\s*function iconSvg/, 'Profissionais');
 const professionals = Function(`return (${profileSource})`)();
 const iconsSource = extract(/const paths=(\{[\s\S]*?\});\s*return `<svg/, 'Ícones');
 const icons = Function(`return (${iconsSource})`)();
@@ -58,7 +58,9 @@ assert.equal(html, builtHtml, 'Código-fonte e versão de publicação divergent
 assert.ok(html.includes('aria-label="Anunciar meu serviço"'), 'Botão móvel sem descrição acessível');
 assert.ok(html.includes('CONFIG.adminWhatsapp'), 'Integração de cadastro não configurável');
 assert.match(html, /adminWhatsapp:\s*'5585997120397'/, 'WhatsApp administrativo não configurado corretamente');
-assert.ok(html.includes('Enviar meu cadastro pelo WhatsApp'), 'Botão do auto-cadastro ausente');
+assert.ok(html.includes('Solicitar análise do meu cadastro'), 'Botão do auto-cadastro ausente');
 assert.ok(html.includes('https://wa.me/5585997120397'), 'Canal direto de atendimento da agência ausente');
+assert.ok(html.includes("loadApprovedProfiles()"), 'Perfis aprovados do banco não são consultados');
+assert.ok(html.includes("fetch('/api/cadastros'"), 'Auto-cadastro no banco de dados ausente');
 
 console.log(`AUDITORIA OK — ${services.length} profissões, ${areas.length} localidades, ${professionals.length} perfil(is) real(is), ícones, links internos, JavaScript e ativos.`);
