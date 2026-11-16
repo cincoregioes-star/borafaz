@@ -249,8 +249,9 @@
     const registerArea=document.getElementById('pro-area');
     const menuToggle=document.getElementById('menu-toggle');
     const menu=document.getElementById('main-nav');
-    SERVICES.forEach(s=>registerService.add(new Option(s.name,s.id)));
-    AREAS.forEach(a=>{areaFilter.add(new Option(a,a));registerArea.add(new Option(a,a))});
+    const alphabetical=(a,b)=>a.localeCompare(b,'pt-BR',{sensitivity:'base'});
+    [...SERVICES].sort((a,b)=>alphabetical(a.name,b.name)).forEach(s=>registerService.add(new Option(s.name,s.id)));
+    [...AREAS].sort(alphabetical).forEach(a=>{areaFilter.add(new Option(a,a));registerArea.add(new Option(a,a))});
     document.getElementById('year').textContent=new Date().getFullYear();
 
     function renderCategories(){
