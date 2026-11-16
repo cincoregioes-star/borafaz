@@ -64,6 +64,8 @@ assert.ok(html.includes('Solicitar análise do meu cadastro'), 'Botão do auto-c
 assert.ok(html.includes('https://wa.me/5585997120397'), 'Canal direto de atendimento da agência ausente');
 assert.ok(html.includes("loadApprovedProfiles()"), 'Perfis aprovados do banco não são consultados');
 assert.ok(html.includes("fetch('/api/cadastros'"), 'Auto-cadastro no banco de dados ausente');
+assert.ok(!html.includes('admin-footer-link') && !html.includes('Painel administrativo ↗'), 'Link público do painel administrativo ainda aparece');
+assert.ok(source.includes("oai-authenticated-user-id") && source.includes('BORAFAZ_ADMIN_EMAIL'), 'Controle de acesso administrativo ausente');
 assert.ok(html.includes('Nossa equipe entrará em contato pelo WhatsApp informado'), 'Orientação de retorno por WhatsApp ausente no cadastro');
 assert.ok(admin.includes('Enviar mensagem ao profissional') && admin.includes('contactHref(p)'), 'Botão de contato por WhatsApp ausente no painel');
 assert.ok(source.includes('REGISTRATION_MESSAGE') && source.includes('Nossa equipe entrará em contato pelo WhatsApp informado'), 'Mensagem de confirmação do servidor ausente');
