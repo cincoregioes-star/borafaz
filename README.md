@@ -7,7 +7,9 @@ Vitrine digital para encontrar profissionais de Beberibe e região. Clientes pes
 - 58 categorias profissionais, incluindo diaristas, professores particulares, pintores e técnicos de máquinas de lavar.
 - Filtros por profissão e localidade; layout responsivo com animações nos cards.
 - Perfis com foto, nome, áreas de atendimento e botão de WhatsApp.
-- Formulário que o próprio profissional preenche e envia pelo WhatsApp da agência, sem precisar ditar seus dados.
+- Formulário preenchido pelo profissional, com foto opcional, envio ao banco de dados e análise antes da divulgação.
+- Painel administrativo `/admin`, com aprovação, edição, suspensão, arquivamento e confirmação manual da mensalidade.
+- Perfis novos aparecem automaticamente no catálogo apenas após aprovação **e** confirmação de pagamento.
 - Informações sobre a mensalidade sugerida de R$ 19,90.
 
 ## Como publicar no GitHub Pages
@@ -32,14 +34,27 @@ Vitrine digital para encontrar profissionais de Beberibe e região. Clientes pes
 
 ```bash
 node scripts/audit.mjs
+node scripts/build-worker.mjs
+node scripts/test-worker.mjs
 ```
 
-## Antes do lançamento comercial
+## Hospedagem com banco de dados
+
+- O GitHub Pages mantém a vitrine estática e o cadastro por WhatsApp como contingência. Ele **não executa** o banco nem o painel.
+- O ChatGPT Sites usa um Worker com banco Cloudflare D1 (`DB`), armazenamento de fotografias R2 (`BUCKET`) e migração em `drizzle/0000_borafaz.sql`.
+- O catálogo da hospedagem dinâmica consulta `/api/profissionais` e divulga somente registros aprovados, ativos e com mensalidade confirmada/válida.
+- O administrador entra em `/admin` usando a conta autorizada pela hospedagem. A identidade administrativa é comparada a `BORAFAZ_ADMIN_EMAIL`, variável secreta configurada no Sites. Não há senha exposta no código.
+- Confirmar um Pix no painel é uma **declaração manual** do administrador, não uma consulta bancária. Isso acrescenta 30 dias ao prazo de anúncio.
+- O perfil legado da Francisca continua publicado diretamente no HTML original e não está, nesta etapa, sujeito ao painel de pagamentos.
+- Enviar formulário não aprova, não cobra e não publica automaticamente o cadastro.
+
+## Antes da abertura comercial
 
 - WhatsApp da agência configurado: **(85) 99712-0397** (`CONFIG.adminWhatsapp`). Verificar o recebimento de uma solicitação de teste.
-- Definir os meios de recebimento das mensalidades. Não existe cobrança automática.
+- Definir a chave Pix e testar o recebimento das mensalidades. Não existe cobrança automática.
 - Cadastrar profissionais reais mediante autorização de divulgação.
 - Completar dados de atendimento, privacidade e regras comerciais.
-- O formulário atual não cria uma conta nem salva cadastros automaticamente: o profissional deve tocar em **Enviar** na mensagem preparada pelo WhatsApp. A administração analisa e publica manualmente os perfis aprovados.
+- Fazer um cadastro de teste no site dinâmico, aprovar no painel e conferir a publicação no catálogo.
+- O Site hospedado permanece privado para o proprietário até a liberação explícita do acesso público.
 
-O projeto também possui uma prévia privada vinculada ao ChatGPT Sites. Este repositório do GitHub é uma cópia publicável, sem necessidade do arquivo privado de hospedagem do Sites.
+Este repositório do GitHub preserva a vitrine estática. O painel e a API são componentes específicos da hospedagem dinâmica do ChatGPT Sites.
