@@ -62,5 +62,12 @@ assert.ok(html.includes('Solicitar análise do meu cadastro'), 'Botão do auto-c
 assert.ok(html.includes('https://wa.me/5585997120397'), 'Canal direto de atendimento da agência ausente');
 assert.ok(html.includes("loadApprovedProfiles()"), 'Perfis aprovados do banco não são consultados');
 assert.ok(html.includes("fetch('/api/cadastros'"), 'Auto-cadastro no banco de dados ausente');
+assert.ok(html.includes("[...SERVICES].sort((a,b)=>alphabetical(a.name,b.name))"), 'Profissões do formulário fora da ordenação alfabética');
+assert.ok(html.includes('[...AREAS].sort(alphabetical)'), 'Localidades do formulário e filtro fora da ordenação alfabética');
+const ptSort = (a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
+const firstProfession = services.map(s => s.name).sort(ptSort)[0];
+const firstArea = [...areas].sort(ptSort)[0];
+assert.equal(firstProfession, 'Ajudante de pedreiro', 'Primeira profissão alfabética inesperada');
+assert.equal(firstArea, 'Barra da Sucatinga', 'Primeira localidade alfabética inesperada');
 
 console.log(`AUDITORIA OK — ${services.length} profissões, ${areas.length} localidades, ${professionals.length} perfil(is) real(is), ícones, links internos, JavaScript e ativos.`);
