@@ -9,6 +9,8 @@ const mainFile = join(root, 'index.html');
 const buildFile = join(root, 'dist', 'index.html');
 const html = readFileSync(mainFile, 'utf8');
 const builtHtml = readFileSync(buildFile, 'utf8');
+const admin = readFileSync(join(root, 'admin.html'), 'utf8');
+const source = readFileSync(join(root, 'worker', 'index.js'), 'utf8');
 
 function extract(pattern, label) {
   const match = html.match(pattern);
@@ -62,6 +64,9 @@ assert.ok(html.includes('Solicitar análise do meu cadastro'), 'Botão do auto-c
 assert.ok(html.includes('https://wa.me/5585997120397'), 'Canal direto de atendimento da agência ausente');
 assert.ok(html.includes("loadApprovedProfiles()"), 'Perfis aprovados do banco não são consultados');
 assert.ok(html.includes("fetch('/api/cadastros'"), 'Auto-cadastro no banco de dados ausente');
+assert.ok(html.includes('Nossa equipe entrará em contato pelo WhatsApp informado'), 'Orientação de retorno por WhatsApp ausente no cadastro');
+assert.ok(admin.includes('Enviar mensagem ao profissional') && admin.includes('contactHref(p)'), 'Botão de contato por WhatsApp ausente no painel');
+assert.ok(source.includes('REGISTRATION_MESSAGE') && source.includes('Nossa equipe entrará em contato pelo WhatsApp informado'), 'Mensagem de confirmação do servidor ausente');
 assert.ok(html.includes("[...SERVICES].sort((a,b)=>alphabetical(a.name,b.name))"), 'Profissões do formulário fora da ordenação alfabética');
 assert.ok(html.includes('[...AREAS].sort(alphabetical)'), 'Localidades do formulário e filtro fora da ordenação alfabética');
 const ptSort = (a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
