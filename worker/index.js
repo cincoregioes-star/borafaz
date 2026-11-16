@@ -45,7 +45,7 @@ function inputText(value, max, required = true) {
 }
 function phone(value) {
   const digits = String(value || '').replace(/\D/g, '');
-  const normal = digits.startsWith('55') ? digits : '55' + digits;
+  const normal = digits.length === 10 || digits.length === 11 ? '55' + digits : digits;
   if (!/^55\d{10,11}$/.test(normal)) throw new Error('WhatsApp inválido. Informe o DDD.');
   return normal;
 }
