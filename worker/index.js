@@ -10,6 +10,7 @@ const SERVICE_LABELS = '__BORAFAZ_SERVICE_LABELS__';
 
 const MAX_PHOTO_BYTES = 3 * 1024 * 1024;
 const PHOTO_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+const REGISTRATION_MESSAGE = '✅ Cadastro recebido com sucesso!\nObrigado por se cadastrar na BORAFAZ. Sua solicitação foi encaminhada para análise.\n📲 Nossa equipe entrará em contato pelo WhatsApp informado no cadastro para orientar sobre a aprovação, a mensalidade de divulgação de R$ 19,90 e a publicação do seu perfil.\n⚠️ Não realize pagamentos antes de receber as orientações da agência. Nenhuma cobrança foi realizada neste cadastro.\nBORAFAZ — Serviço bom, gente perto.';
 
 function reply(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), {
@@ -121,7 +122,7 @@ async function createApplication(request, env) {
   // Evita cópias acidentais do mesmo pedido enviadas em sequência.
   const duplicate = await env.DB.prepare("SELECT id FROM professionals WHERE whatsapp = ? AND service = ? AND created_at > datetime('now','-3 minutes') LIMIT 1")
     .bind(data.whatsapp, data.service).first();
-  if (duplicate) return reply({ ok: true, message: 'Sua solicitação já foi recebida. Aguarde a análise.' });
+  if (duplicate) return reply({ ok: true, message: 'Sua solicitação já foi recebida e está em análise.\n📲 Nossa equipe entrará em contato pelo WhatsApp informado para orientar sobre os próximos passos. Não realize pagamentos antes das orientações da agência.' });
   const id = crypto.randomUUID();
   let photoKey = null;
   try {
@@ -135,7 +136,7 @@ async function createApplication(request, env) {
     if (photoKey && env.BUCKET) await env.BUCKET.delete(photoKey).catch(() => {});
     throw error;
   }
-  return reply({ ok: true, id, message: 'Cadastro recebido! Aguarde a aprovação da agência. Nenhuma cobrança foi realizada.' }, 201);
+  return reply({ ok: true, id, message: REGISTRATION_MESSAGE }, 201);
 }
 async function listPublic(env) {
   if (!env.DB) return noCache('Catálogo temporariamente indisponível.', 503);
