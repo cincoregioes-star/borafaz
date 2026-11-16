@@ -57,5 +57,8 @@ for (const id of ['categories-grid', 'service-search', 'area-filter', 'signup-fo
 assert.equal(html, builtHtml, 'Código-fonte e versão de publicação divergentes');
 assert.ok(html.includes('aria-label="Anunciar meu serviço"'), 'Botão móvel sem descrição acessível');
 assert.ok(html.includes('CONFIG.adminWhatsapp'), 'Integração de cadastro não configurável');
+assert.match(html, /adminWhatsapp:\s*'5585997120397'/, 'WhatsApp administrativo não configurado corretamente');
+assert.ok(html.includes('Enviar meu cadastro pelo WhatsApp'), 'Botão do auto-cadastro ausente');
+assert.ok(html.includes('https://wa.me/5585997120397'), 'Canal direto de atendimento da agência ausente');
 
 console.log(`AUDITORIA OK — ${services.length} profissões, ${areas.length} localidades, ${professionals.length} perfil(is) real(is), ícones, links internos, JavaScript e ativos.`);
