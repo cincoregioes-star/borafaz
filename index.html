@@ -313,6 +313,11 @@
         if(!res.ok)return;
         const data=await res.json();if(!data.ok||!Array.isArray(data.professionals))return;
         registrationApiAvailable=true;
+        if(!document.getElementById('admin-footer-link')){
+          const adminLink=document.createElement('a');adminLink.id='admin-footer-link';adminLink.href='/admin';
+          adminLink.textContent='Painel administrativo ↗';adminLink.style.cssText='color:var(--lime);font-size:11px;font-weight:800';
+          document.querySelector('.footer-bottom')?.appendChild(adminLink);
+        }
         const approved=data.professionals.filter(p=>SERVICES.some(s=>s.id===p.service)&&/^55\d{10,11}$/.test(cleanNumber(p.whatsapp)));
         PROFESSIONALS=[...PROFESSIONALS.filter(legacy=>!approved.some(p=>p.whatsapp===legacy.whatsapp&&p.service===legacy.service)),...approved];
         renderCategories();
