@@ -76,7 +76,7 @@
         for(const [id,items] of [['edit-service',data.services],['edit-area',data.areas]]){
           const original=document.getElementById(id);const replacement=document.createElement('select');
           replacement.id=id;replacement.name=original.name;replacement.required=true;
-          items.forEach(item=>{const option=document.createElement('option');option.value=typeof item==='string'?item:item.id;option.textContent=typeof item==='string'?item:item.name;replacement.appendChild(option)});
+          [...items].sort((a,b)=>(typeof a==='string'?a:a.name).localeCompare(typeof b==='string'?b:b.name,'pt-BR',{sensitivity:'base'})).forEach(item=>{const option=document.createElement('option');option.value=typeof item==='string'?item:item.id;option.textContent=typeof item==='string'?item:item.name;replacement.appendChild(option)});
           original.replaceWith(replacement);
         }
         render();
